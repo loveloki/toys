@@ -4,12 +4,15 @@ import ReactDOM from 'react-dom'
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(6).fill(0))
+  const max = Math.max(...votes)
+  const mostIndex = votes.indexOf(max)
 
   const getRandom = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min
   }
+
   const nextAnecdote = () => {
     const len = props.anecdotes.length
     let random = getRandom(0, len - 1)
@@ -30,11 +33,16 @@ const App = (props) => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {props.anecdotes[selected]}
       <p>have {votes[selected]} votes</p>
       <div>
         <button onClick={voteAnecdote}>vote</button>
         <button onClick={nextAnecdote}>next</button>
+      </div>
+      <div>
+        <h1>Anecdote with most votes</h1>
+        {props.anecdotes[mostIndex]}
       </div>
     </div>
   )
