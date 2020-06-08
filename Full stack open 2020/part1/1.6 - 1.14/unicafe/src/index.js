@@ -12,6 +12,16 @@ const Button = props => {
 
 const Statistics = props => {
   const { good, neutral, bad } = props
+
+  if(good === 0 && neutral === 0 && bad === 0) {
+    return (
+      <div>
+        <h1>statistics</h1>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
+
   const all = good + neutral + bad
   const average = (good * 1 + bad * -1) / all || 0
   const positive = good / all || 0
