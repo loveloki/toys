@@ -1,0 +1,17 @@
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa
+server->browser: 返回 HTML
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+server->browser: main.css
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/spa.js
+server->browser: spa.js
+
+note over browser:
+执行spa.js
+end note
+
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+server->browser: json格式的内容 [{"content":"HTML is easy","date":"2019-05-23T17:30:31.098Z"},...]
+
+note over browser:
+浏览器加载各种事件，显示notes列表
+end note

@@ -1,0 +1,12 @@
+note over browser
+在输入框中进行编辑
+按下save按钮
+end note
+
+note over browser:
+执行spa.js
+浏览器显示新的notes列表
+end note
+
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa 内容：{content: ... , date: ...}
+server->browser: 返回201响应

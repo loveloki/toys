@@ -1,0 +1,29 @@
+note over browser
+在输入框中进行编辑
+按下save按钮
+end note
+
+browser->server: 对服务器的 /new_note 发送HTTP POST 请求，内容为{note: 输入框内容}
+server->browser: 返回302响应
+browser->server: 通过302响应对服务器的 /notes 发送新的 HTTP GET 请求
+server->browser: 返回 HTML
+
+note over browser:
+重新加载notes页面，本次加载又触发了3次请求
+end note
+
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+server->browser: main.css
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+server->browser: main.js
+
+note over browser:
+执行main.js
+end note
+
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+server->browser: json格式的内容 [{"content":"HTML is easy","date":"2019-05-23T17:30:31.098Z"},...]
+
+note over browser:
+浏览器加载各种事件，显示notes列表
+end note
