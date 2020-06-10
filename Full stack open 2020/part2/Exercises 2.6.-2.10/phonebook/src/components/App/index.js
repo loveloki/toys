@@ -13,7 +13,14 @@ const App = () => {
   const handleSubmit = e => {
     e.preventDefault()
 
-    setPersons(persons.concat({name: newName}))
+    const flag = persons.map(person => person.name).includes(newName)
+
+    if (flag) {
+      alert(`电话簿中已保存 ${newName}，请重新输入`)
+    } else {
+      setPersons(persons.concat({name: newName}))
+    }
+
     setNewName('')
   }
 
