@@ -1,18 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Search from '../Search'
 import PersonForm from '../PersonForm'
 import Persons from '../Persons'
+import Axios from 'axios'
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: '11111111111' },
-    { name: 'a', number: '11111111111' },
-    { name: 'hsda', number: '11111111111' },
-    { name: 'b', number: '11111111111' },
-    { name: 'uihsdbsdd', number: '11111111111' },
-    { name: 'sd eedda', number: '11111111111' },
-    { name: 'feed', number: '11111111111' },
-  ])
+  const [ persons, setPersons ] = useState([])
+
+  useEffect(() => {
+    Axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
