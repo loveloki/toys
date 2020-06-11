@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import Search from '../Search';
-import Country from '../Country';
 import SearchResultList from '../SearchResultList';
 
 function App() {
