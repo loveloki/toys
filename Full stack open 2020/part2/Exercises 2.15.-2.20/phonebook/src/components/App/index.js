@@ -86,6 +86,10 @@ const App = () => {
 
           showMessage(`删除 ${name} 成功！`, 'success')
         })
+        .catch(error => {
+          showMessage(`服务器不存在此用户，删除 ${name} 失败！`, 'warn')
+          setPersons(persons.filter(person => person.id !== id))
+        })
     }
   }
 
