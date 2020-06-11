@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
+import Search from '../Search';
+import Country from '../Country';
+import SearchResultList from '../SearchResultList';
 
 function App() {
   const [countries, setCountries] = useState([])
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     Axios
@@ -12,9 +16,14 @@ function App() {
       })
   }, [])
 
+  const handleSearchChange = e => {
+    setSearch(e.target.value)
+  }
+
   return (
     <div className="App">
-      {countries.map(country => <p key={country.numericCode}>{country.name}</p>)}
+      <Search text={search} handleSearchChange={handleSearchChange} />
+      <SearchResultList search={search} countries={countries} />
     </div>
   );
 }
