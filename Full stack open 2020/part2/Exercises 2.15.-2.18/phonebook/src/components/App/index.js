@@ -38,7 +38,15 @@ const App = () => {
     const flag = persons.map(person => person.name).includes(newName)
 
     if (flag) {
-      alert(`电话簿中已保存 ${newName}，请重新输入`)
+      const flag = window.confirm(`电话簿中已保存 ${newName}，是否覆盖?`)
+      if (flag) {
+        const id = persons.find(person => person.name === newName).id
+
+        phoneBook.update(id, {name: newName, number: newNumber})
+          .then(newPerson => {
+            setPersons(persons.map(person => person.name !== newName ? person : newPerson))
+          })
+      }
     } else {
       PhoneBookService
         .create({name: newName, number: newNumber})
