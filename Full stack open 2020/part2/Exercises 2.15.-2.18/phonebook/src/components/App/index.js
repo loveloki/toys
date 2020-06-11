@@ -3,6 +3,7 @@ import Search from '../Search'
 import PersonForm from '../PersonForm'
 import Persons from '../Persons'
 import PhoneBookService from '../../services/phoneBook'
+import phoneBook from '../../services/phoneBook'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -50,13 +51,25 @@ const App = () => {
     setNewNumber('')
   }
 
+  const deletePerson = (id, name) => {
+    const flag = window.confirm(`确定删除 ${name} ?`)
+
+    if (flag) {
+      phoneBook
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  }
+
   return (
     <div>
       <h2>电话簿</h2>
       <Search text={search} handleChange={handleChangeSearch} />
       <PersonForm newName={newName} handleChangeName={handleChangeName} newNumber={newNumber} HandleChangeNumber={HandleChangeNumber} handleSubmit={handleSubmit} />
       <h2>Numbers</h2>
-      <Persons persons={persons} search={search} />
+      <Persons persons={persons} search={search} deletePerson={deletePerson} />
     </div>
   )
 }
