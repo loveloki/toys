@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react'
 import Search from '../Search'
 import PersonForm from '../PersonForm'
 import Persons from '../Persons'
-import Axios from 'axios'
+import PhoneBookService from '../../services/phoneBook'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
 
   useEffect(() => {
-    Axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    PhoneBookService
+      .getAll()
+      .then(allPersons => {
+        setPersons(allPersons)
       })
   }, [])
 
@@ -39,10 +39,10 @@ const App = () => {
     if (flag) {
       alert(`电话簿中已保存 ${newName}，请重新输入`)
     } else {
-      Axios
-        .post('http://localhost:3001/persons', {name: newName, number: newNumber})
-        .then(response => {
-          setPersons(persons.concat({name: newName, number: newNumber}))
+      PhoneBookService
+        .create({name: newName, number: newNumber})
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
         })
     }
 
