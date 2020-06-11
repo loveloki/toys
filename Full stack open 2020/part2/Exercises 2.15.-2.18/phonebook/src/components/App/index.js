@@ -39,7 +39,11 @@ const App = () => {
     if (flag) {
       alert(`电话簿中已保存 ${newName}，请重新输入`)
     } else {
-      setPersons(persons.concat({name: newName, number: newNumber}))
+      Axios
+        .post('http://localhost:3001/persons', {name: newName, number: newNumber})
+        .then(response => {
+          setPersons(persons.concat({name: newName, number: newNumber}))
+        })
     }
 
     setNewName('')
