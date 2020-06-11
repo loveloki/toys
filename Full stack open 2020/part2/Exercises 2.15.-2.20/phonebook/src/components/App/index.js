@@ -4,9 +4,12 @@ import PersonForm from '../PersonForm'
 import Persons from '../Persons'
 import PhoneBookService from '../../services/phoneBook'
 import phoneBook from '../../services/phoneBook'
+import Notification from '../Notification'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
+  const [type, setType] = useState('success')
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     PhoneBookService
@@ -19,6 +22,15 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ search, setSearch ] = useState('')
+
+  const showMessage = (message, type) => {
+    setMessage(message)
+    setType(type)
+
+    setTimeout(() => {
+      setMessage('')
+    }, 3000)
+  }
 
   const handleChangeName = e => {
     setNewName(e.target.value)
@@ -45,6 +57,8 @@ const App = () => {
         phoneBook.update(id, {name: newName, number: newNumber})
           .then(newPerson => {
             setPersons(persons.map(person => person.name !== newName ? person : newPerson))
+
+            showMessage(`覆盖 ${newName} 成功！`, 'success')
           })
       }
     } else {
@@ -52,6 +66,8 @@ const App = () => {
         .create({name: newName, number: newNumber})
         .then(newPerson => {
           setPersons(persons.concat(newPerson))
+
+          showMessage(`添加 ${newName} 成功！`, 'success')
         })
     }
 
@@ -67,12 +83,15 @@ const App = () => {
         .remove(id)
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
+
+          showMessage(`删除 ${name} 成功！`, 'success')
         })
     }
   }
 
   return (
     <div>
+      <Notification message={message} type={type} />
       <h2>电话簿</h2>
       <Search text={search} handleChange={handleChangeSearch} />
       <PersonForm newName={newName} handleChangeName={handleChangeName} newNumber={newNumber} HandleChangeNumber={HandleChangeNumber} handleSubmit={handleSubmit} />
