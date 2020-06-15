@@ -1,10 +1,14 @@
 const express = require('express')
 var morgan = require('morgan')
 
-
 const app = express()
 
-app.use(morgan('tiny'))
+morgan.token('post-content', (req, res) => {
+  return JSON.stringify(req.body)
+})
+morgan.format('post', `:method :url :status :res[content-length] - :response-time ms [post提交内容] :post-content`)
+
+app.use(morgan('post'))
 app.use(express.json())
 
 let notes = [
