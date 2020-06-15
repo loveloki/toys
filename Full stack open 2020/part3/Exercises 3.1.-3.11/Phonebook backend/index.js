@@ -84,6 +84,8 @@ app.post('/persons', (req, res) => {
   res.json(note)
 })
 
-app.listen(3001, () => {
+const PORT = process.env.PORT || 3001
+
+app.listen(PORT, () => {
   console.log('端口开启于 3001')
 })
