@@ -2,6 +2,8 @@ const express = require('express')
 
 const app = express()
 
+app.use(express.json())
+
 let notes = [
   {
     id: 1,
@@ -46,6 +48,24 @@ app.delete('/api/persons/:id', (req, res) => {
   notes = notes.filter(note => note.id != id)
 
   res.json(notes)
+})
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body
+
+  if (!body.number || !body.name) {
+    return res.status(404).send('缺少电话号码或人名')
+  }
+
+  const note = {
+    id: Math.floor(Math.random() * 10000),
+    name: body.name,
+    number: body.number,
+  }
+
+  notes = notes.concat(note)
+
+  res.json(note)
 })
 
 app.listen(3001, () => {
