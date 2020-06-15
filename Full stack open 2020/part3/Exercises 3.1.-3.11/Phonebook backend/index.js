@@ -3,6 +3,11 @@ var morgan = require('morgan')
 
 const app = express()
 
+app.use(express.static('build'))
+
+// app.use('/static', express.static(path.join(__dirname, 'public')))
+
+
 morgan.token('post-content', (req, res) => {
   return JSON.stringify(req.body)
 })
@@ -33,11 +38,11 @@ app.get('/info', (req, res) => {
   res.send(`<p>电话簿存了 ${number} 个人</p><p>${new Date()}</p>`)
 })
 
-app.get('/api/persons', (req, res) => {
+app.get('/persons', (req, res) => {
   res.json(notes)
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/persons/:id', (req, res) => {
   const id = req.params.id
 
   const person = notes.find(person => person.id == id)
@@ -49,7 +54,7 @@ app.get('/api/persons/:id', (req, res) => {
   }
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/persons/:id', (req, res) => {
   const id = req.params.id
 
   notes = notes.filter(note => note.id != id)
@@ -57,7 +62,7 @@ app.delete('/api/persons/:id', (req, res) => {
   res.json(notes)
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/persons', (req, res) => {
   const body = req.body
 
   if (!body.number || !body.name) {
