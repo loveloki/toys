@@ -18,6 +18,12 @@ let notes = [
   },
 ]
 
+app.get('/info', (req, res) => {
+  const number = notes.length
+
+  res.send(`<p>电话簿存了 ${number} 个人</p><p>${new Date()}</p>`)
+})
+
 app.get('/api/persons', (req, res) => {
   res.json(notes)
 })
