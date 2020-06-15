@@ -28,6 +28,18 @@ app.get('/api/persons', (req, res) => {
   res.json(notes)
 })
 
+app.get('/api/persons/:id', (req, res) => {
+  const id = req.params.id
+
+  const person = notes.find(person => person.id == id)
+
+  if (person) {
+    res.json(person)
+  } else {
+    res.status(404).end()
+  }
+})
+
 app.listen(3001, () => {
   console.log('端口开启于 3001')
 })
