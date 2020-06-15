@@ -57,6 +57,10 @@ app.post('/api/persons', (req, res) => {
     return res.status(404).send('缺少电话号码或人名')
   }
 
+  if (notes.find(note => note.name === body.name)) {
+    return res.status(403).json({error: '存在重名，请重新编辑'})
+  }
+
   const note = {
     id: Math.floor(Math.random() * 10000),
     name: body.name,
