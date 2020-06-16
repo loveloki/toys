@@ -1,9 +1,12 @@
 require('dotenv').config()
+const cors = require('cors')
 const express = require('express')
 const morgan = require('morgan')
 const Note = require('./mongo')
 
 const app = express()
+
+app.use(cors())
 
 app.use(express.static('build'))
 
@@ -80,7 +83,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     number: body.number,
   }
 
-  Note.findByIdAndUpdate(id, note, { new: true })
+  Note.findByIdAndUpdate(id, note, { new: true, runValidators: true })
     .then(updateNote => {
       res.json(updateNote)
     })
@@ -93,7 +96,7 @@ const errorHandle = (error, req, res, next) => {
 
   if (error.name === 'ValidationError') {
     console.log('验证错误')
-    res.status(403).send({ error: '用户名验证出错，请检查是否重复'})
+    res.status(403).send({ error: error.message})
   }
 
   next(error)
