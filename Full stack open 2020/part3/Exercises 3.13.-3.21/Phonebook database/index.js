@@ -72,15 +72,15 @@ app.post('/persons', (req, res) => {
     return res.status(403).json({error: '存在重名，请重新编辑'})
   }
 
-  const note = {
-    id: Math.floor(Math.random() * 10000),
+  const note = new Note({
     name: body.name,
     number: body.number,
-  }
+  })
 
-  notes = notes.concat(note)
+  note.save().then(newNote => {
+    res.json(newNote)
+  })
 
-  res.json(note)
 })
 
 const PORT = process.env.PORT || 3001
