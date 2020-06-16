@@ -22,35 +22,19 @@ const errorHandle = (error, req, res, next) => {
 }
 app.use(errorHandle)
 
-let notes = [
-  {
-    id: 1,
-    name: "Tom",
-    number: "1115551654"
-  },{
-    id: 2,
-    name: "Sony",
-    number: "2225551654"
-  },{
-    id: 3,
-    name: "Apple",
-    number: "3335551654"
-  },
-]
-
 app.get('/info', (req, res) => {
-  const number = notes.length
-
-  res.send(`<p>电话簿存了 ${number} 个人</p><p>${new Date()}</p>`)
+  Note.find({}).then(notes => {
+    res.send(`<p>电话簿存了 ${notes.length} 个人</p><p>${new Date()}</p>`)
+  })
 })
 
-app.get('/persons', (req, res, next) => {
+app.get('/api/persons', (req, res, next) => {
   Note.find({})
     .then(notes => res.json(notes))
     .catch(error => next(error))
 })
 
-app.get('/persons/:id', (req, res, next) => {
+app.get('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
 
   Note.findById(id)
@@ -65,7 +49,7 @@ app.get('/persons/:id', (req, res, next) => {
 
 })
 
-app.delete('/persons/:id', (req, res, next) => {
+app.delete('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
 
   Note.findByIdAndRemove(id)
@@ -75,7 +59,7 @@ app.delete('/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-app.post('/persons', (req, res, next) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
 
   if (!body.number || !body.name) {
@@ -98,7 +82,7 @@ app.post('/persons', (req, res, next) => {
     .catch(error => next(error))
 
 })
-app.put('/persons/:id', (req, res, next) => {
+app.put('/api/persons/:id', (req, res, next) => {
   const body = req.body
   const id = req.params.id
 
