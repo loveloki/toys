@@ -56,9 +56,9 @@ app.get('/persons/:id', (req, res) => {
 app.delete('/persons/:id', (req, res) => {
   const id = req.params.id
 
-  notes = notes.filter(note => note.id != id)
-
-  res.json(notes)
+  Note.findByIdAndRemove(id).then(result => {
+    res.status(204).end()
+  })
 })
 
 app.post('/persons', (req, res) => {
