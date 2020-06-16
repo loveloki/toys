@@ -21,7 +21,7 @@ const remove = id => {
 }
 
 const update = (id, newObject) => {
-  const request = Axios.patch(`${baseUrl}/${id}`, newObject)
+  const request = Axios.put(`${baseUrl}/${id}`, newObject)
 
   return request.then(response => response.data)
 }

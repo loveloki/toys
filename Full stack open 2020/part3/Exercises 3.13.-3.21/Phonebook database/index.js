@@ -98,6 +98,22 @@ app.post('/persons', (req, res, next) => {
     .catch(error => next(error))
 
 })
+app.put('/persons/:id', (req, res, next) => {
+  const body = req.body
+  const id = req.params.id
+
+  const note = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Note.findByIdAndUpdate(id, note, { new: true })
+    .then(updateNote => {
+      res.json(updateNote)
+    })
+    .catch(error => next(error))
+
+})
 
 const PORT = process.env.PORT || 3001
 
