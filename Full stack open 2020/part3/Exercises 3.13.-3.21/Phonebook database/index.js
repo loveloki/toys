@@ -15,13 +15,6 @@ morgan.format('post', `:method :url :status :res[content-length] - :response-tim
 app.use(morgan('post'))
 app.use(express.json())
 
-const errorHandle = (error, req, res, next) => {
-  console.log('error', error.message)
-
-  next(error)
-}
-app.use(errorHandle)
-
 app.get('/info', (req, res) => {
   Note.find({}).then(notes => {
     res.send(`<p>电话簿存了 ${notes.length} 个人</p><p>${new Date()}</p>`)
@@ -66,10 +59,6 @@ app.post('/api/persons', (req, res, next) => {
     return res.status(404).send('缺少电话号码或人名')
   }
 
-  if (notes.find(note => note.name === body.name)) {
-    return res.status(403).json({error: '存在重名，请重新编辑'})
-  }
-
   const note = new Note({
     name: body.name,
     number: body.number,
@@ -98,6 +87,18 @@ app.put('/api/persons/:id', (req, res, next) => {
     .catch(error => next(error))
 
 })
+
+const errorHandle = (error, req, res, next) => {
+  console.log('error', error.message)
+
+  if (error.name === 'ValidationError') {
+    console.log('验证错误')
+    res.status(403).send({ error: '用户名验证出错，请检查是否重复'})
+  }
+
+  next(error)
+}
+app.use(errorHandle)
 
 const PORT = process.env.PORT || 3001
 
